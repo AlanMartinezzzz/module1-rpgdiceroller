@@ -1,5 +1,6 @@
 package com.example.diceroller
 
+import android.icu.text.ListFormatter
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -37,6 +38,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+
+
+//  animacion..
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import androidx.compose.runtime.rememberCoroutineScope
+// COLORES
+import androidx.compose.ui.graphics.Color
+
+
 
 import com.example.diceroller.ui.theme.DiceRollerTheme
 
@@ -86,6 +97,11 @@ fun MainScreen() {
     val total = vitality + dexterity + wisdom
 
 
+
+    // scope va a ser n uestro control remoto para las animaciones del roll
+    val scope = rememberCoroutineScope()
+
+
     // UI BASE: para topB y contenido
     Scaffold(
         topBar = {
@@ -122,7 +138,18 @@ fun MainScreen() {
             StatRow(
                 name = "Vitality",
                 value = vitality,
-                roll = { vitality = (MIN..MAX).random() } //  número aleatorio entre 1 y 20
+                roll = {
+                    scope.launch {
+                        repeat(10) {
+                            vitality = (MIN..MAX).random()
+                            delay(100)
+                        }
+
+                    }
+
+
+
+                } //  número aleatorio entre 1 y 20
             )
 
             Spacer(Modifier.height(20.dp))
@@ -130,15 +157,33 @@ fun MainScreen() {
             StatRow(
                 name = "Dexterity",
                 value = dexterity,
-                roll = { dexterity = (MIN..MAX).random() } //  número aleatorio entre 1 y 20
+                roll = {
+                    scope.launch {
+                        repeat(10) {
+                            dexterity = (MIN..MAX).random() //  número aleatorio entre 1 y 20
+                            delay(100)
+                        }
+
+                    }
+
+                }
             )
+
 
             Spacer(Modifier.height(20.dp))
 
             StatRow(
                 name = "Wisdom",
                 value = wisdom,
-                roll = { wisdom = (MIN..MAX).random() } //  número aleatorio entre 1 y 20
+                roll = {
+                    scope.launch {
+                        repeat(10) {
+                            wisdom = (MIN..MAX).random() //  número aleatorio entre 1 y 20
+                            delay(100)
+                        }
+
+                    }
+                }
             )
 
             Spacer(Modifier.height(20.dp))
@@ -174,7 +219,7 @@ fun StatRow(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(30.dp),
+                .padding(50.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
