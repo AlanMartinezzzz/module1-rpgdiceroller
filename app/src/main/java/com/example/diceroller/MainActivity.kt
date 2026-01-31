@@ -1,6 +1,5 @@
 package com.example.diceroller
 
-import android.icu.text.ListFormatter
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -44,8 +43,7 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.rememberCoroutineScope
-// COLORES
-import androidx.compose.ui.graphics.Color
+
 
 
 
@@ -89,17 +87,18 @@ fun MainScreen() {
     // "mutableIntStateOf" = si cambia el valor, Compose redibuja la UI automáticamente
 
 
-    var vitality by remember { mutableIntStateOf(10) }
-    var dexterity by remember { mutableIntStateOf(10) }
-    var wisdom by remember { mutableIntStateOf(10) }
+    var vit by remember { mutableIntStateOf(10) }
+    var dex by remember { mutableIntStateOf(10) }
+    var wis by remember { mutableIntStateOf(10) }
 
     // total
-    val total = vitality + dexterity + wisdom
+    val total = vit + dex + wis
 
 
 
     // scope va a ser n uestro control remoto para las animaciones del roll
     val scope = rememberCoroutineScope()
+    // courutines asi simulamos el roll sin bloquear con delay asi la forma correcta en compose
 
 
     // UI BASE: para topB y contenido
@@ -136,12 +135,12 @@ fun MainScreen() {
             // 3 FILAS: Vitality / Dexterity / Wisdom
             // name , value, roll
             StatRow(
-                name = "Vitality",
-                value = vitality,
+                name = "STR",
+                value = vit,
                 roll = {
                     scope.launch {
                         repeat(10) {
-                            vitality = (MIN..MAX).random()
+                            vit = (MIN..MAX).random()
                             delay(100)
                         }
 
@@ -155,12 +154,12 @@ fun MainScreen() {
             Spacer(Modifier.height(20.dp))
 
             StatRow(
-                name = "Dexterity",
-                value = dexterity,
+                name = "DEX",
+                value = dex,
                 roll = {
                     scope.launch {
                         repeat(10) {
-                            dexterity = (MIN..MAX).random() //  número aleatorio entre 1 y 20
+                            dex = (MIN..MAX).random() //  número aleatorio entre 1 y 20
                             delay(100)
                         }
 
@@ -173,12 +172,12 @@ fun MainScreen() {
             Spacer(Modifier.height(20.dp))
 
             StatRow(
-                name = "Wisdom",
-                value = wisdom,
+                name = "INT",
+                value = wis,
                 roll = {
                     scope.launch {
                         repeat(10) {
-                            wisdom = (MIN..MAX).random() //  número aleatorio entre 1 y 20
+                            wis = (MIN..MAX).random() //  número aleatorio entre 1 y 20
                             delay(100)
                         }
 
@@ -194,6 +193,32 @@ fun MainScreen() {
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
+
+            when {
+                total < 30 -> {
+                    Text(
+                        text = "Re-roll recommended!",
+                        color = Color.Red,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+
+                total >= 50 -> {
+                    Text(
+                        text = "Godlike!",
+                        color = Color(0xFFFFC107),
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+
+
+            }
 
         }
     }
