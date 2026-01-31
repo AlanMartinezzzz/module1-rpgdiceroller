@@ -122,10 +122,11 @@ fun MainScreen() {
         ) {
 
             Text(
-                text = "Estadisticas del dado (1 - 20)",
+                text = "ROLL STATES (1 - 20)",
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
                 textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
 
             )
 
